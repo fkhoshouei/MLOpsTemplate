@@ -93,6 +93,20 @@ In this step you will clone the above forked repository into a development envir
 
 ![](./images/run_mlopsworkshop_azcli004.png)
 
+> IMPORTANT: setup Git credentials helper (to avoid typing your username / password every time you push some changes)
+
+```bash
+git config --global credential.helper store
+```
+
+> IMPORTANT: Git push commands setup (replace with the email linked to your github account + specify your full name)
+
+```bash
+git config --global user.email "my_email@my_company.com"
+git config --global user.name "Firstname Lastname"
+git config --global push.default simple
+```
+
 - A5. Generate and register data for the workshop
 
     - Update arguments "_NAMES_ and _ID_" accordingly and then run following commands from the Terminal
@@ -130,11 +144,16 @@ In this step you will clone the above forked repository into a development envir
         ```bash
         az login
         ```
+        If you have access to more than 1 tenants, it's advisable to use the syntax below with a designated tenant id to logon to the right tenant
+        ```bash
+        az login --tenant "<YOUR_TENANT_ID>"
+        ```
+        Use the code and follow the instruction to finish the login.
     > Note: You need to login in and be authenticated to use the `az cli` extension.
         ![](./images/run_mlopsworkshop_azcli006.png)
         After copy the __code__ and go to the link, [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin). 
         
-        Use the code and follow the instruction to finish the login.
+
 
 - A8. Configure the subscription and Azure Machine Learning Workspace
     ```bash
@@ -164,7 +183,7 @@ In this step you will clone the above forked repository into a development envir
     - To create a Service Principal, run the following command:
 
     ```bash
-    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes/subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
+    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
     ```
     
     ![](./images/arm002.png)
@@ -213,7 +232,10 @@ In this step you will clone the above forked repository into a development envir
         ```bash
         az login
         ```
-
+        If you have access to more than 1 tenants, it's advisable to use the syntax below with a designated tenant id to logon to the right tenant
+        ```bash
+        az login --tenant "<YOUR_TENANT_ID>"
+        ```
     - You need to follow the guide to use `az cli` for the lab
 
         ![](./images/run_mlopsworkshop_azcli006.png)
@@ -243,6 +265,20 @@ In this step you will clone the above forked repository into a development envir
     ```bash
     git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     ```
+
+> IMPORTANT: if this is the first time using Git on your laptop, setup Git credentials helper (to avoid typing your username / password every time you push some changes)
+
+```bash
+git config --global credential.helper store
+```
+
+> IMPORTANT: if this is your first time using Git on your laptop, go through this Git push commands setup (replace with the email linked to your github account + specify your full name)
+
+```bash
+git config --global user.email "my_email@my_company.com"
+git config --global user.name "Firstname Lastname"
+git config --global push.default simple
+```
 
     - Using conda, create a new virtual environment or use an existing virtual environment with azureml-sdk, pandas, sckit-learn
 
@@ -296,26 +332,51 @@ In this step you will clone the above forked repository into a development envir
     
     Accept the prompt to create a default storage account to host some of the files the Azure Cloud Shell requires to function. The Cloud Shell gives you access to a terminal (PowerShell or Bash) to execute commands within Azure.
 
-    Select PowerShell or Bash.
-    If you select PowerShell, you'll end up with a screen like this once it's started up:
+    Select Bash. You'll end up with a screen like this once it's started up:
 
     ![](./images/cloudshell-firstlaunch.png)
 
+- C2. Check Python Version
+    - We will need be using a version of Python 3.8. Check to see which version you are using by running the following command:
+    ``` bash
+    python -V
+    ```
+    If the output is Python 3.8.X (any version), continue to step C4. If you need to change your Python version, follow the next steps.
 
-- C2. Install The Azure CLI Machine Learning extension v2 (aka az ml)
+- C3. Download Python 3.8
+    1. ```bash 
+        wget https://repo.continuum.io/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh
+        ```
+    2. ``` bash
+       sh Miniconda3-py38_4.9.2-Linux-x86_64.sh
+       ```
+    3. Accept the agreement and install on the default path
+    ![](./images/cloudshell-accept.png)
+    4. ``` bash
+        export PATH=~/miniconda3/bin:$PATH
+        ```
+    5. Verify Python Version
+    ``` bash 
+    python -V
+    ```
+
+- C4. Install The Azure CLI Machine Learning extension v2 (aka az ml)
     
     ``` bash
     az extension add -n ml -y --version 2.2.1
     ```
     
-- C3. Login the CLI to Azure
+- C5. Login the CLI to Azure
 
     - Run the following command from the Terminal
 
         ```bash
         az login
         ```
-
+        If you have access to more than 1 tenants, it's advisable to use the syntax below with a designated tenant id to logon to the right tenant
+        ```bash
+        az login --tenant "<YOUR_TENANT_ID>"
+        ```
     - You need to follow the guide to use `az cli` for the lab
 
         ![](./images/run_mlopsworkshop_azcli006.png)
@@ -324,7 +385,7 @@ In this step you will clone the above forked repository into a development envir
         
         Use the code and follow the instructions to finish the login.
 
-- C4. After logging into the `az cli`, come back to your terminal and configure the subscription and Azure Machine Learning Workspace by running the following commands:
+- C6. After logging into the `az cli`, come back to your terminal and configure the subscription and Azure Machine Learning Workspace by running the following commands:
 
     ```bash
     az account set -s "<YOUR_SUBSCRIPTION_NAME>"
@@ -338,7 +399,7 @@ In this step you will clone the above forked repository into a development envir
 - The results will look like the following:
     ![](./images/run_mlopsworkshop_azcli007.png)
 
-- C5. Clone your 'MLOpsTemplate' repo and setup your environment
+- C7. Clone your 'MLOpsTemplate' repo and setup your environment
     - Before you run following command, upate __{YOURGITHUBACCOUNT}__ part
     - Sample command looks like following
 
@@ -346,6 +407,20 @@ In this step you will clone the above forked repository into a development envir
     git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     cd ./MLOpsTemplate/src/workshop
     ```
+
+> IMPORTANT: setup Git credentials helper (to avoid typing your username / password every time you push some changes)
+
+```bash
+git config --global credential.helper store
+```
+
+> IMPORTANT: Git push commands setup (replace with the email linked to your github account + specify your full name)
+
+```bash
+git config --global user.email "my_email@my_company.com"
+git config --global user.name "Firstname Lastname"
+git config --global push.default simple
+```
 
     - Upgrade pip to this specific version:
 
@@ -359,7 +434,7 @@ In this step you will clone the above forked repository into a development envir
         pip install -r requirements-local.txt
         ```
 
-- C6. Generate and register data for the workshop
+- C8. Generate and register data for the workshop
     - Update arguments __"NAMES and ID"__ accordingly and then run following commands from your local terminal
         > You should run the commands from the path, __'MLOpsTemplate/src/workshop$'__
 
@@ -367,7 +442,7 @@ In this step you will clone the above forked repository into a development envir
         python ./data/create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name "AML_WS_NAME" --sub_id "SUBSCRIPTION_ID" --resourcegroup_name "RG_NAME"
         ```
 
-- C7. Create Service Principal
+- C9. Create Service Principal
 
     > If you have a Service Principal, please use the existing one. Ignore this step and go to next step 4.
     > If you don't have the Service Principal, please follow this step.
@@ -439,9 +514,9 @@ You are going to create PAT to allow your code access your personal git repo
 
     ![](./images/github4001.png)
 
-- Type `USER_NAME_GITHUB_SECRET` for the name of the secret, and paste the token you copied from PAT section
+- Type `PERSONAL_ACCESS_TOKEN_GITHUB` for the name of the secret, and paste the token you copied from PAT section
 
-    > Important: The name for this secret must be `USER_NAME_GITHUB_SECRET`
+    > Important: The name for this secret must be `PERSONAL_ACCESS_TOKEN_GITHUB`
 
     ![](./images/github4008.png)
 
@@ -485,9 +560,9 @@ You have saved in step A9, B9 or C7 the output of the SP creation command, it sh
 
     ![](./images/github4001.png)
 
-- Type `AZURE_CREDENTIALS_USERNAME` for the name of the secret, and paste your SP json definition:
+- Type `AZURE_SERVICE_PRINCIPAL` for the name of the secret, and paste your SP json definition:
 
-    > Important: The name for this secret must be `AZURE_CREDENTIALS_USERNAME`
+    > Important: The name for this secret must be `AZURE_SERVICE_PRINCIPAL`
 
     ![](./images/github4002.png)
 
